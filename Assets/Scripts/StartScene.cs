@@ -10,6 +10,7 @@ public class StartScene : MonoBehaviour
     void Start()
     {
         m_sceneLoader = GetComponent<SceneLoader>();
+        Destroy(GameObject.Find("Event Logger"));
     }
 
     // Update is called once per frame

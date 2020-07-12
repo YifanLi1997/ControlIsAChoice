@@ -1,9 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class EventLog : MonoBehaviour
 {
+    [SerializeField] GameObject logPanel;
+    [SerializeField] TextMeshProUGUI log;
+    bool logPanelEnabled = false;
+    
     [System.Serializable]
     public struct MyEvent
     {
@@ -34,6 +39,21 @@ public class EventLog : MonoBehaviour
         e.eventName = name;
         e.eventNarrative = narrative;
         myEvents.Add(e);
+
+        log.text += e.index.ToString() + " " + e.eventName + "\n" + e.eventNarrative + "\n \n";
     }
 
+    public void ShowLog()
+    {
+        if (!logPanelEnabled)
+        {
+            logPanel.SetActive(true);
+            logPanelEnabled = true;
+        }
+        else
+        {
+            logPanel.SetActive(false);
+            logPanelEnabled = false;
+        }
+    }
 }

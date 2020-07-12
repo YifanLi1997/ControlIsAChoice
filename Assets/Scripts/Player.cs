@@ -42,6 +42,7 @@ public class Player : MonoBehaviour
         if (!door)
         {
             door = GameObject.Find("Door");
+            transform.position = door.transform.position;
         }
 
         MoveForward();
@@ -62,6 +63,7 @@ public class Player : MonoBehaviour
         {
             if (!discoveryEvent.GetHasOpened())
             {
+                Time.timeScale = 0;
                 discoveryEvent.SetHasOpened(true);
                 discoveryEvent.ActivateThePanel();
                 _knowledge++;
@@ -73,6 +75,7 @@ public class Player : MonoBehaviour
         {
             if (!discoveryEvent.GetHasOpened())
             {
+                Time.timeScale = 0;
                 discoveryEvent.SetHasOpened(true);
                 discoveryEvent.ActivateThePanel();
                 _mood += 0.5f;
@@ -80,9 +83,20 @@ public class Player : MonoBehaviour
                 m_eventLog.LogEvent(collision.gameObject.name, discoveryEvent.GetNarrative());
             }
         }
+        if (collision.gameObject.CompareTag("DoorInfo"))
+        {
+            if (!discoveryEvent.GetHasOpened())
+            {
+                Time.timeScale = 0;
+                discoveryEvent.SetHasOpened(true);
+                discoveryEvent.ActivateThePanel();
+                m_eventLog.LogEvent(collision.gameObject.name, discoveryEvent.GetNarrative());
+            }
+        }
 
         if (collision.gameObject.CompareTag("Key"))
         {
+            Time.timeScale = 0;
             SpriteRenderer[] spriteRenderers = door.GetComponentsInChildren<SpriteRenderer>();
             spriteRenderers[0].sprite = doorOpenMid;
             spriteRenderers[1].sprite = doorOpenTop;

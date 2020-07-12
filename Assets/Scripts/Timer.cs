@@ -2,16 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 public class Timer : MonoBehaviour
 {
 
+    [SerializeField] GameObject losePanel;
     [SerializeField] TextMeshProUGUI timerText;
-    [SerializeField] float levelTimeInSeconds = 300f;
+    [Tooltip("Applies to the first level")]
+    [SerializeField] float levelTimeInSeconds = 240f;
+    [SerializeField] float laterLevelsTimeInSeconds = 90f;
+    [SerializeField] Player player;
+    int level = 1;
     float startTime;
     float currentTime;
     float passedTime;
     int remainedTime;
+
+    [Header("For test")]
+    [SerializeField] bool isLosing;
 
     void Start()
     {
@@ -21,10 +30,34 @@ public class Timer : MonoBehaviour
     
     void Update()
     {
+        // For test
+        if (isLosing)
+        {
+            Lose();
+        }
+
         currentTime = Time.time;
         passedTime = currentTime - startTime;
         remainedTime = Mathf.RoundToInt(levelTimeInSeconds - passedTime);
         convertSecondToMin();
+
+        if (remainedTime < 0)
+        {
+            if (level == 1)
+            {
+                Lose();
+            }
+            else
+            {
+                player.LevelUp();
+            }
+        }
+    }
+
+    private void Lose()
+    {
+        Time.timeScale = 0;
+        losePanel.SetActive(true);
     }
 
     public void convertSecondToMin()
@@ -36,7 +69,8 @@ public class Timer : MonoBehaviour
 
     public void LevelUp()
     {
+        level++;
         startTime = Time.time;
-        levelTimeInSeconds = 180f;
+        levelTimeInSeconds = laterLevelsTimeInSeconds;
     }
 }

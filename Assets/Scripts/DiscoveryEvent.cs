@@ -28,6 +28,13 @@ public class DiscoveryEvent : MonoBehaviour
 
     private void Update()
     {
+        if (!eventPanel)
+        {
+            Canvas canvas = FindObjectOfType<Canvas>();
+            eventPanel = canvas.transform.Find("Panel").gameObject;
+        }
+
+        // for quick test
         if (isActivated)
         {
             ActivateThePanel();
@@ -37,6 +44,7 @@ public class DiscoveryEvent : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.DownArrow))
             {
+                Time.timeScale = 1;
                 eventPanel.SetActive(false);
                 isPanelActive = false;
                 if (gameObject.CompareTag("Key"))
