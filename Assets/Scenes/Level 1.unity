@@ -47694,13 +47694,35 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5828099659414423791, guid: d13b82467add248c386828ae29b6e357,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 0.15
+      objectReference: {fileID: 0}
     - target: {fileID: 5828099658166875710, guid: d13b82467add248c386828ae29b6e357,
         type: 3}
       propertyPath: door
       value: 
       objectReference: {fileID: 916569666}
+    - target: {fileID: 5828099657490323614, guid: d13b82467add248c386828ae29b6e357,
+        type: 3}
+      propertyPath: sceneLoader
+      value: 
+      objectReference: {fileID: 5828099658222866695}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d13b82467add248c386828ae29b6e357, type: 3}
+--- !u!114 &5828099658222866695 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1614829020, guid: d13b82467add248c386828ae29b6e357,
+    type: 3}
+  m_PrefabInstance: {fileID: 5828099658222866694}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e335c29eeb64549f789852b2791ca747, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &5861678164357690415 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4354109154892641315, guid: a6bee179948cf4984b590b1ca406b738,
