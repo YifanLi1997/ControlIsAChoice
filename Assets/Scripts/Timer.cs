@@ -7,7 +7,7 @@ public class Timer : MonoBehaviour
 {
 
     [SerializeField] TextMeshProUGUI timerText;
-    [SerializeField] float levelTimeInSeconds = 300;
+    [SerializeField] float levelTimeInSeconds = 300f;
     float startTime;
     float currentTime;
     float passedTime;
@@ -32,5 +32,11 @@ public class Timer : MonoBehaviour
         int minute = remainedTime / 60;
         int second = remainedTime % 60;
         timerText.text = minute.ToString("d2") + ":" + second.ToString("d2");
+    }
+
+    public void LevelUp()
+    {
+        startTime = Time.time;
+        levelTimeInSeconds = 180f;
     }
 }

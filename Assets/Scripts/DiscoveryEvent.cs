@@ -9,6 +9,8 @@ public class DiscoveryEvent : MonoBehaviour
     bool hasOpened = false;
     bool isPanelActive = false;
 
+    [Tooltip("only needed for the key")]
+    [SerializeField] Player optionalPlayer;
     [SerializeField] GameObject eventPanel;
     [SerializeField] Sprite sprite_1;
     [SerializeField] Sprite sprite_2;
@@ -33,7 +35,15 @@ public class DiscoveryEvent : MonoBehaviour
 
         if (isPanelActive)
         {
-            // TODO: close
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                eventPanel.SetActive(false);
+                isPanelActive = false;
+                if (gameObject.CompareTag("Key"))
+                {
+                    optionalPlayer.LevelUp();
+                }
+            }
         }
     }
 
@@ -51,9 +61,19 @@ public class DiscoveryEvent : MonoBehaviour
         // put the event into log
     }
 
+    public bool GetIsPanelActive()
+    {
+        return isPanelActive;
+    }
+
     public bool GetHasOpened()
     {
         return hasOpened;
+    }
+
+    public string GetNarrative()
+    {
+        return narrative;
     }
 
     public void SetHasOpened(bool hasOpened)

@@ -7,8 +7,15 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] SceneLoader m_sceneLoader;
     [SerializeField] Camera m_camera;
+    [SerializeField] Timer m_timer;
+    [SerializeField] GameObject door;
+    [SerializeField] Sprite doorOpenMid;
+    [SerializeField] Sprite doorOpenTop;
 
+
+    EventLog m_eventLog;
     Animator m_animator;
     Rigidbody2D m_rb;
     [SerializeField] float moveSpeed = 5f;
@@ -23,6 +30,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        m_eventLog = FindObjectOfType<EventLog>();
         m_animator = GetComponent<Animator>();
         m_rb = GetComponent<Rigidbody2D>();
         knowledgeText.text = knowledgeText.text + _knowledge.ToString();
@@ -31,6 +39,11 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        if (!door)
+        {
+            door = GameObject.Find("Door");
+        }
+
         MoveForward();
         Rotate();
     }
@@ -38,6 +51,12 @@ public class Player : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         DiscoveryEvent discoveryEvent = collision.gameObject.GetComponent<DiscoveryEvent>();
+
+        if (!discoveryEvent)
+        {
+            Debug.LogWarning("no discovery event is found in " + collision.gameObject.name);
+            return;
+        }
 
         if (collision.gameObject.CompareTag("Knowledge"))
         {
@@ -47,6 +66,7 @@ public class Player : MonoBehaviour
                 discoveryEvent.ActivateThePanel();
                 _knowledge++;
                 knowledgeText.text = "Knowledge: " + _knowledge.ToString();
+                m_eventLog.LogEvent(collision.gameObject.name, discoveryEvent.GetNarrative());
             }
         }
         if (collision.gameObject.CompareTag("Mood"))
@@ -57,8 +77,34 @@ public class Player : MonoBehaviour
                 discoveryEvent.ActivateThePanel();
                 _mood += 0.5f;
                 moodSlider.value = _mood / _fullMood;
+                m_eventLog.LogEvent(collision.gameObject.name, discoveryEvent.GetNarrative());
             }
         }
+
+        if (collision.gameObject.CompareTag("Key"))
+        {
+            SpriteRenderer[] spriteRenderers = door.GetComponentsInChildren<SpriteRenderer>();
+            spriteRenderers[0].sprite = doorOpenMid;
+            spriteRenderers[1].sprite = doorOpenTop;
+            discoveryEvent.SetHasOpened(true);
+            discoveryEvent.ActivateThePanel();
+            m_eventLog.LogEvent(collision.gameObject.name, discoveryEvent.GetNarrative());
+        }
+    }
+
+    public void LevelUp()
+    {
+        transform.position = door.transform.position;
+        m_rb.velocity = Vector2.zero;
+        m_animator.SetTrigger("IsLevelingUp");
+        StartCoroutine(DelayOneSecond());
+    }
+
+    IEnumerator DelayOneSecond()
+    {
+        yield return new WaitForSeconds(1.2f);
+        m_sceneLoader.LoadNextScene();
+        m_timer.LevelUp();
     }
 
     private void Rotate()

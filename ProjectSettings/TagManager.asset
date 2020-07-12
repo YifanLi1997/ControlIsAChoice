@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Mood
   - Knowledge
+  - Key
   layers:
   - Default
   - TransparentFX
